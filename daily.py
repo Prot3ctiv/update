@@ -111,11 +111,11 @@ def gate_daily(gate_auswahl, status_callback):
     if finde_bild("gatecheck.png", schwellenwert=0.99):
         time.sleep(2)
         klicke_bild("menu.png")
-        time.sleep(1)
+        time.sleep(0.5)
         klicke_bild("menu.png")
         time.sleep(2)
         klicke_bild("chapter.png")
-        time.sleep(1)
+        time.sleep(0.5)
         klicke_bild("chapter.png")
         status_callback("Gate Daily abgeschlossen (Gatecheck gefunden)")
         return
@@ -157,11 +157,11 @@ def gate_daily(gate_auswahl, status_callback):
             if gatecheck_gefunden:
                 time.sleep(2)
                 klicke_bild("menu.png")
-                time.sleep(1)
+                time.sleep(0.5)
                 klicke_bild("menu.png")
                 time.sleep(2)
                 klicke_bild("chapter.png")
-                time.sleep(1)
+                time.sleep(0.5)
                 klicke_bild("chapter.png")
                 status_callback("Gate Daily abgeschlossen (Gatecheck gefunden)")
                 return
@@ -179,11 +179,11 @@ def gate_daily(gate_auswahl, status_callback):
     if gatecheck_gefunden:
         time.sleep(2)
         klicke_bild("menu.png")
-        time.sleep(1)
+        time.sleep(0.5)
         klicke_bild("menu.png")
         time.sleep(2)
         klicke_bild("chapter.png")
-        time.sleep(1)
+        time.sleep(0.5)
         klicke_bild("chapter.png")
         status_callback("Gate Daily abgeschlossen (Gatecheck gefunden)")
         return
