@@ -175,8 +175,19 @@ gate_vars = {
     "BlueGate": tk.BooleanVar()
 }
 
+# Gate-Checkbuttons und Bilder
+gate_images = ["gg1.png", "gg2.png", "gg3.png", "gg4.png"]
 for i, (gate_name, var) in enumerate(gate_vars.items()):
-    tk.Checkbutton(gate_frame, text=gate_name, variable=var).grid(row=0, column=i, padx=5)
+    tk.Checkbutton(gate_frame, text="", variable=var).grid(row=0, column=i * 2, padx=5)
+    try:
+        gate_image = Image.open(os.path.join(os.path.dirname(__file__), gate_images[i]))
+        gate_image = gate_image.resize((32, 32), Image.LANCZOS)
+        gate_photo = ImageTk.PhotoImage(gate_image)
+        gate_label = tk.Label(gate_frame, image=gate_photo)
+        gate_label.image = gate_photo
+        gate_label.grid(row=0, column=i * 2 + 1, padx=5)
+    except FileNotFoundError:
+        print(f"{gate_images[i]} not found.")
 
 # Instanz-Daily Setup
 ttk.Label(main_frame, text="Instance-Daily Setup", font=("Helvetica", 14, "bold")).grid(row=1, column=2, columnspan=2, pady=10)
