@@ -111,7 +111,11 @@ def gate_daily(gate_auswahl, status_callback):
     if finde_bild("gatecheck.png", schwellenwert=0.99):
         time.sleep(2)
         klicke_bild("menu.png")
+        time.sleep(1)
+        klicke_bild("menu.png")
         time.sleep(2)
+        klicke_bild("chapter.png")
+        time.sleep(1)
         klicke_bild("chapter.png")
         status_callback("Gate Daily abgeschlossen (Gatecheck gefunden)")
         return
@@ -135,9 +139,15 @@ def gate_daily(gate_auswahl, status_callback):
                 klicke_bild(gate_bild)
                 time.sleep(2)
                 klicke_bild("gate5.png")
+                time.sleep(1)
+                klicke_bild("gate5.png")
                 time.sleep(2)
                 klicke_bild("gate6.png")
+                time.sleep(1)
+                klicke_bild("gate6.png")
                 warte_auf_bild("gate7.png", status_callback)
+                klicke_bild("gate7.png")
+                time.sleep(1)
                 klicke_bild("gate7.png")
                 time.sleep(10)
                 gate_gefunden = True
@@ -147,7 +157,11 @@ def gate_daily(gate_auswahl, status_callback):
             if gatecheck_gefunden:
                 time.sleep(2)
                 klicke_bild("menu.png")
+                time.sleep(1)
+                klicke_bild("menu.png")
                 time.sleep(2)
+                klicke_bild("chapter.png")
+                time.sleep(1)
                 klicke_bild("chapter.png")
                 status_callback("Gate Daily abgeschlossen (Gatecheck gefunden)")
                 return
@@ -165,7 +179,11 @@ def gate_daily(gate_auswahl, status_callback):
     if gatecheck_gefunden:
         time.sleep(2)
         klicke_bild("menu.png")
+        time.sleep(1)
+        klicke_bild("menu.png")
         time.sleep(2)
+        klicke_bild("chapter.png")
+        time.sleep(1)
         klicke_bild("chapter.png")
         status_callback("Gate Daily abgeschlossen (Gatecheck gefunden)")
         return
@@ -184,7 +202,11 @@ def instanz_daily(category, equipment, status_callback):
     if finde_bild("inscheck.png", schwellenwert=0.99):
         time.sleep(3)
         klicke_bild("menu.png")
+        time.sleep(1)
+        klicke_bild("menu.png")
         time.sleep(3)
+        klicke_bild("chapter.png")
+        time.sleep(1)
         klicke_bild("chapter.png")
         status_callback("Instanz-Daily abgeschlossen (inscheck gefunden)")
         return
@@ -201,7 +223,11 @@ def instanz_daily(category, equipment, status_callback):
     if finde_bild("inscheck.png", schwellenwert=0.99):
         time.sleep(3)
         klicke_bild("menu.png")
+        time.sleep(1)
+        klicke_bild("menu.png")
         time.sleep(3)
+        klicke_bild("chapter.png")
+        time.sleep(1)
         klicke_bild("chapter.png")
         status_callback("Instanz-Daily abgeschlossen (inscheck gefunden)")
         return
@@ -210,7 +236,11 @@ def instanz_daily(category, equipment, status_callback):
     if finde_bild("inscheck.png", schwellenwert=0.99):
         time.sleep(3)
         klicke_bild("menu.png")
+        time.sleep(1)
+        klicke_bild("menu.png")
         time.sleep(3)
+        klicke_bild("chapter.png")
+        time.sleep(1)
         klicke_bild("chapter.png")
         status_callback("Instanz-Daily abgeschlossen (inscheck gefunden)")
         return
@@ -223,7 +253,11 @@ def instanz_daily(category, equipment, status_callback):
         if inscheck_gefunden:
             time.sleep(3)
             klicke_bild("menu.png")
+            time.sleep(1)
+            klicke_bild("menu.png")
             time.sleep(3)
+            klicke_bild("chapter.png")
+            time.sleep(1)
             klicke_bild("chapter.png")
             status_callback("Instanz-Daily abgeschlossen (inscheck gefunden)")
             return
@@ -236,21 +270,35 @@ def instanz_daily(category, equipment, status_callback):
         if finde_bild("inscheck.png", schwellenwert=0.99):
             time.sleep(3)
             klicke_bild("menu.png")
+            time.sleep(1)
+            klicke_bild("menu.png")
             time.sleep(3)
+            klicke_bild("chapter.png")
+            time.sleep(1)
             klicke_bild("chapter.png")
             status_callback("Instanz-Daily abgeschlossen (inscheck gefunden)")
             return
+        klicke_bild("ins7.png")
+        time.sleep(1)
         klicke_bild("ins7.png")
         time.sleep(3)
         if finde_bild("inscheck.png", schwellenwert=0.99):
             time.sleep(3)
             klicke_bild("menu.png")
+            time.sleep(1)
+            klicke_bild("menu.png")
             time.sleep(3)
+            klicke_bild("chapter.png")
+            time.sleep(1)
             klicke_bild("chapter.png")
             status_callback("Instanz-Daily abgeschlossen (inscheck gefunden)")
             return
         klicke_bild("ins8.png")
+        time.sleep(1)
+        klicke_bild("ins8.png")
         warte_auf_bild("gate7.png", status_callback)
+        klicke_bild("gate7.png")
+        time.sleep(1)
         klicke_bild("gate7.png")
         time.sleep(10)
 
@@ -271,7 +319,11 @@ def hunter_daily(hunter_level, status_callback):
     if huntercheck_gefunden:
         time.sleep(3)
         klicke_bild("menu.png")
+        time.sleep(1)
+        klicke_bild("menu.png")
         time.sleep(3)
+        klicke_bild("chapter.png")
+        time.sleep(1)
         klicke_bild("chapter.png")
         status_callback("Hunter-Daily abgeschlossen (huntercheck gefunden)")
         return
@@ -290,9 +342,13 @@ def hunter_daily(hunter_level, status_callback):
         klicke_bild(level_bilder[hunter_level])
         time.sleep(3)
         klicke_bild("hunter8.png")
+        time.sleep(1)
+        klicke_bild("hunter8.png")
         warte_auf_bild("hunter9.png", status_callback)
         klicke_bild("hunter9.png")
-        time.sleep(5)
+        time.sleep(1)
+        klicke_bild("hunter9.png")
+        time.sleep(10)
     else:
         status_callback(f"Ungültiges Hunter-Level: {hunter_level}")
         return
@@ -301,7 +357,11 @@ def hunter_daily(hunter_level, status_callback):
         if huntercheck_gefunden:
             time.sleep(3)
             klicke_bild("menu.png")
+            time.sleep(1)
+            klicke_bild("menu.png")
             time.sleep(3)
+            klicke_bild("chapter.png")
+            time.sleep(1)
             klicke_bild("chapter.png")
             status_callback("Hunter-Daily abgeschlossen (huntercheck gefunden)")
             return
@@ -310,9 +370,13 @@ def hunter_daily(hunter_level, status_callback):
             klicke_bild(level_bilder[hunter_level])
             time.sleep(3)
             klicke_bild("hunter8.png")
+            time.sleep(1)
+            klicke_bild("hunter8.png")
             warte_auf_bild("hunter9.png", status_callback)
             klicke_bild("hunter9.png")
-            time.sleep(5)
+            time.sleep(1)
+            klicke_bild("hunter9.png")
+            time.sleep(10)
         else:
             status_callback(f"Ungültiges Hunter-Level: {hunter_level}")
             return
