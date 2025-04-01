@@ -12,7 +12,7 @@ import threading
 repo_owner = "Prot3ctiv"
 repo_name = "auto"
 file_path = "keys.json"
-github_token = "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"  # Ersetzen Sie dies durch Ihr GitHub-Token
+github_token = "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"  # Ersetzen Sie dies durch Ihr GitHub-Token
 
 def lade_keys_von_online():
     """Lädt die Aktivierungskeys von der Online-Datei."""
@@ -130,6 +130,7 @@ def starte_patch_vorgang():
 
     def patch_thread():
         """Führt den Patchvorgang in einem separaten Thread aus."""
+        print("Starte Patch-Vorgang...") # Fehlerbehebung
         try:
             repo_url = "https://api.github.com/repos/Prot3ctiv/update/contents"
             response = requests.get(repo_url)
@@ -138,8 +139,10 @@ def starte_patch_vorgang():
             dateien = response.json()
             total_dateien = len(dateien)
             geladene_dateien = 0
+            alle_dateien_aktuell = True
 
             for datei in dateien:
+                print(f"Verarbeite Datei: {datei['name']}") # Fehlerbehebung
                 if datei["type"] == "file" and datei["name"].endswith((".py", ".png", ".jpg", ".jpeg")):
                     datei_url = datei["download_url"]
                     datei_inhalt = requests.get(datei_url).content
@@ -152,78 +155,35 @@ def starte_patch_vorgang():
                                 geladene_dateien += 1
                                 update_progress((geladene_dateien / total_dateien) * 100)
                                 continue
-
+                    alle_dateien_aktuell = False
                     with open(lokale_datei_pfad, "wb") as lokale_datei:
                         lokale_datei.write(datei_inhalt)
                     geladene_dateien += 1
                     update_progress((geladene_dateien / total_dateien) * 100)
 
+            print("Patch-Vorgang abgeschlossen.") # Fehlerbehebung
             patch_fenster.destroy()
-            starte_ui()  # Starte die UI nach erfolgreichem Patch
+            if alle_dateien_aktuell:
+                threading.Thread(target=starte_bot).start()  # starte_bot in einem Thread
+            else:
+                start_button = ttk.Button(patch_fenster, text="Start", command=lambda: threading.Thread(target=starte_bot).start(), style="TButton")  # starte_bot in einem Thread
+                start_button.pack(pady=10)
 
         except requests.exceptions.RequestException as e:
             print(f"Fehler beim Herunterladen der Updates: {e}")
             patch_fenster.destroy()
-            starte_ui()
+            threading.Thread(target=starte_bot).start()  # starte_bot in einem Thread
         except Exception as e:
             print(f"Unerwarteter Fehler: {e}")
             patch_fenster.destroy()
-            starte_ui()
+            threading.Thread(target=starte_bot).start()  # starte_bot in einem Thread
 
     threading.Thread(target=patch_thread).start()
     patch_fenster.mainloop()
 
 def starte_bot():
     """Starts the Daily Bot with selected values."""
-    gate_keys = gate_keys_var.get()
-    replay_keys = replay_keys_var.get()
-    hunter_keys = hunter_keys_var.get()
-    chaos_keys = chaos_keys_var.get()
-    gate_auswahl = [gate_name for gate_name, var in gate_vars.items() if var.get()]
-    category = category_var.get()
-    equipment = equipment_var.get()
-    hunter_level = hunter_level_var.get()
-    chaos_selection = chaos_selection_var.get()
-    # daily.daily_bot(gate_keys, replay_keys, hunter_keys, chaos_keys, gate_auswahl, category, equipment, hunter_level, chaos_selection, aktualisiere_status)
-
-def aktualisiere_status(status):
-    """Updates the status display in the UI."""
-    status_label.config(text=status)
-
-def auto_update():
-    """Checks and downloads updates from GitHub."""
-    aktualisiere_status("Checking for updates...")
-    try:
-        repo_url = "https://api.github.com/repos/Prot3ctiv/update/contents"
-        response = requests.get(repo_url)
-        response.raise_for_status()
-
-        dateien = response.json()
-        for datei in dateien:
-            if datei["type"] == "file" and datei["name"].endswith((".py", ".png", ".jpg", ".jpeg")):
-                datei_url = datei["download_url"]
-                datei_inhalt = requests.get(datei_url).content
-
-                lokale_datei_pfad = datei["name"]
-                if os.path.exists(lokale_datei_pfad):
-                    with open(lokale_datei_pfad, "rb") as lokale_datei:
-                        lokaler_inhalt = lokale_datei.read()
-                        if hashlib.sha256(lokaler_inhalt).hexdigest() == hashlib.sha256(datei_inhalt).hexdigest():
-                            continue
-
-                with open(lokale_datei_pfad, "wb") as lokale_datei:
-                    lokale_datei.write(datei_inhalt)
-                aktualisiere_status(f"{datei['name']} updated")
-
-        aktualisiere_status("You have the latest files")
-
-    except requests.exceptions.RequestException as e:
-        aktualisiere_status(f"Error downloading updates: {e}")
-    except Exception as e:
-        aktualisiere_status(f"Unexpected error: {e}")
-        
-def starte_ui():
-    """Erstellt die Haupt-UI."""
+    print("Starte Bot...") # Fehlerbehebung
     global root, status_label, gate_keys_var, replay_keys_var, hunter_keys_var, chaos_keys_var, gate_vars, category_var, equipment_var, hunter_level_var, chaos_selection_var
 
     # UI-Setup
@@ -398,7 +358,7 @@ def starte_ui():
     update_button = ttk.Button(main_frame, text="Check for Updates", command=auto_update, style="TButton")
     update_button.grid(row=5, column=0, columnspan=2, pady=10)
 
-    start_button = ttk.Button(main_frame, text="Start", command=starte_bot, style="TButton")
+    start_button = ttk.Button(main_frame, text="Start", command=lambda: threading.Thread(target=starte_bot).start(), style="TButton")
     start_button.grid(row=5, column=2, columnspan=2, pady=10)
 
     # Statusanzeige
@@ -408,7 +368,45 @@ def starte_ui():
     status_label = tk.Label(status_frame, text="", fg="white", bg="black", font=("Helvetica", 12, "bold"))
     status_label.pack(fill=tk.X)
 
+    print("UI-Code ausgeführt.") # Fehlerbehebung
     root.mainloop()
+    print("UI-Schleife beendet.") # Fehlerbehebung
+
+def aktualisiere_status(status):
+    """Updates the status display in the UI."""
+    status_label.config(text=status)
+
+def auto_update():
+    """Checks and downloads updates from GitHub."""
+    aktualisiere_status("Checking for updates...")
+    try:
+        repo_url = "https://api.github.com/repos/Prot3ctiv/update/contents"
+        response = requests.get(repo_url)
+        response.raise_for_status()
+
+        dateien = response.json()
+        for datei in dateien:
+            if datei["type"] == "file" and datei["name"].endswith((".py", ".png", ".jpg", ".jpeg")):
+                datei_url = datei["download_url"]
+                datei_inhalt = requests.get(datei_url).content
+
+                lokale_datei_pfad = datei["name"]
+                if os.path.exists(lokale_datei_pfad):
+                    with open(lokale_datei_pfad, "rb") as lokale_datei:
+                        lokaler_inhalt = lokale_datei.read()
+                        if hashlib.sha256(lokaler_inhalt).hexdigest() == hashlib.sha256(datei_inhalt).hexdigest():
+                            continue
+
+                with open(lokale_datei_pfad, "wb") as lokale_datei:
+                    lokale_datei.write(datei_inhalt)
+                aktualisiere_status(f"{datei['name']} updated")
+
+        aktualisiere_status("You have the latest files")
+
+    except requests.exceptions.RequestException as e:
+        aktualisiere_status(f"Error downloading updates: {e}")
+    except Exception as e:
+        aktualisiere_status(f"Unexpected error: {e}")
 
 # Überprüfe, ob ein lokaler Key vorhanden ist
 lokaler_key = lade_lokalen_key()
