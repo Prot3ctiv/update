@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-import requests
-import hashlib
 import os
 import daily
 import threading
@@ -26,7 +24,21 @@ def starte_bot():
 
 def aktualisiere_status(status):
     """Updates the status display in the UI."""
-    root.after(0, lambda: status_label.config(text=status))
+    root.after(0, lambda: setze_status_text(status))
+
+def setze_status_text(text):
+    """Setzt den Status-Text mit schwarzem Rand."""
+    status_label.config(text=text)
+    # Entferne vorhandene Schatten-Labels
+    for label in status_shadow_labels:
+        label.destroy()
+    status_shadow_labels.clear()
+
+    # Erstelle Schatten-Labels
+    for dx, dy in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
+        shadow_label = tk.Label(status_frame, text=text, fg="black", font=("Helvetica", 16, "bold"))  # Schriftgröße erhöht
+        shadow_label.place(relx=0.5 + dx / 100, rely=0.5 + dy / 100, anchor=tk.CENTER)
+        status_shadow_labels.append(shadow_label)
 
 def stoppe_bot():
     """Sets the stop flag in daily.py."""
@@ -199,10 +211,24 @@ stop_button = ttk.Button(main_frame, text="Stop", command=stoppe_bot, style="TBu
 stop_button.grid(row=5, column=0, columnspan=2, pady=10)
 
 # Statusanzeige
-status_frame = tk.Frame(main_frame, bg="black")
+status_frame = tk.Frame(main_frame)
 status_frame.grid(row=6, column=0, columnspan=4, sticky="ew", padx=10, pady=10)
 
-status_label = tk.Label(status_frame, text="", fg="white", bg="black", font=("Helvetica", 12, "bold"))
-status_label.pack(fill=tk.X)
+try:
+    bg_image = Image.open(os.path.join(os.path.dirname(__file__), "bg.png"))
+    bg_photo = ImageTk.PhotoImage(bg_image)
+    status_bg_label = tk.Label(status_frame, image=bg_photo)
+    status_bg_label.image = bg_photo
+    status_bg_label.pack(fill=tk.BOTH, expand=tk.YES)
+
+    status_label = tk.Label(status_frame, text="", fg="black", font=("Helvetica", 16, "bold"))  # Schriftfarbe auf Schwarz geändert und Schriftgröße erhöht
+    status_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    status_shadow_labels = []  # Liste für Schatten-Labels
+    setze_status_text("")  # Initialisiere Schatten-Labels
+except FileNotFoundError:
+    print("bg.png not found.")
+    status_label = tk.Label(status_frame, text="", fg="black", bg="black", font=("Helvetica", 12, "bold"))
+    status_label.pack(fill=tk.X)
 
 root.mainloop()
