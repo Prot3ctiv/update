@@ -47,7 +47,10 @@ def starte_patch_vorgang():
             response.raise_for_status()
 
             dateien = response.json()
-            gesamt_dateien = len(dateien)
+            gesamt_dateien = 0
+            for datei in dateien:
+                if datei["type"] == "file" and datei["name"].endswith((".py", ".png", ".jpg", ".jpeg")):
+                    gesamt_dateien +=1
             for i, datei in enumerate(dateien):
                 if datei["type"] == "file" and datei["name"].endswith((".py", ".png", ".jpg", ".jpeg")):
                     datei_url = datei["download_url"]
@@ -59,7 +62,8 @@ def starte_patch_vorgang():
                             lokaler_inhalt = lokale_datei.read()
                             if hashlib.sha256(lokaler_inhalt).hexdigest() == hashlib.sha256(datei_inhalt).hexdigest():
                                 continue
-
+                    status_label.config(text=f"Lade {datei['name']} herunter...")
+                    patch_fenster.update_idletasks()
                     with open(lokale_datei_pfad, "wb") as lokale_datei:
                         lokale_datei.write(datei_inhalt)
                     fortschritt = (i + 1) / gesamt_dateien * 100
