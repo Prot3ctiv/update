@@ -11,11 +11,13 @@ huntercheck_gefunden = False
 chascheck_gefunden = False
 
 def klicke_bild(bild_pfad, offset_y=0):
-    """Klickt auf ein Bild auf dem Bildschirm mit optionalem Y-Offset."""
+    """Bewegt die Maus auf das Bild, wartet 1 Sekunde und klickt dann zweimal."""
     position = finde_bild(bild_pfad)
     if position:
         x, y = position
-        pyautogui.click(x, y + offset_y)
+        pyautogui.moveTo(x, y + offset_y, duration=0.25)  # Sanfte Bewegung
+        time.sleep(1)
+        pyautogui.doubleClick(x, y + offset_y)
         return True
     return False
 
@@ -36,7 +38,7 @@ def finde_bild(bild_pfad, schwellenwert=0.8):
     return None
 
 def warte_und_klicke_bild(bild_pfad, status_callback, offset_y=0):
-    """Wartet, bis ein Bild gefunden wird, und klickt dann darauf mit optionalem Y-Offset."""
+    """Wartet, bis ein Bild gefunden wird, und klickt dann darauf."""
     status_callback(f"Warte auf {bild_pfad} und klicke")
     while True:
         position = finde_bild(bild_pfad)
