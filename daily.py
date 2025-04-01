@@ -263,16 +263,14 @@ def hunter_daily(hunter_level, status_callback):
     global huntercheck_gefunden
     huntercheck_gefunden = False
 
+    time.sleep(3)
+    warte_auf_bild("hunter.png", status_callback)
+    klicke_bild("hunter.png", status_callback=status_callback)
+    time.sleep(5)
+    
     huntercheck_thread = threading.Thread(target=huntercheck_suche)
     huntercheck_thread.daemon = True
     huntercheck_thread.start()
-
-    time.sleep(3)
-    if not warte_auf_bild("hunter.png", status_callback):
-        status_callback("hunter.png nicht gefunden. Hunter-Daily abgebrochen.")
-        return
-    klicke_bild("hunter.png", status_callback=status_callback)
-    time.sleep(5)
 
     if huntercheck_gefunden:
         time.sleep(3)
@@ -293,21 +291,10 @@ def hunter_daily(hunter_level, status_callback):
     }
 
     if hunter_level in level_bilder:
-        # Zusätzlicher Huntercheck vor dem Klicken auf das Level
-        if huntercheck_gefunden:
-            time.sleep(3)
-            klicke_bild("menu.png", status_callback=status_callback)
-            time.sleep(3)
-            klicke_bild("chapter.png", status_callback=status_callback)
-            status_callback("Hunter-Daily abgeschlossen (huntercheck gefunden)")
-            return
-
         klicke_bild(level_bilder[hunter_level], status_callback=status_callback)
         time.sleep(3)
         klicke_bild("hunter8.png", status_callback=status_callback)
-        if not warte_auf_bild("hunter9.png", status_callback):
-            status_callback("hunter9.png nicht gefunden. Hunter-Daily abgebrochen.")
-            return
+        warte_auf_bild("hunter9.png", status_callback)
         klicke_bild("hunter9.png", status_callback=status_callback)
         time.sleep(10)
     else:
@@ -324,21 +311,10 @@ def hunter_daily(hunter_level, status_callback):
             return
 
         if hunter_level in level_bilder:
-            # Zusätzlicher Huntercheck vor dem Klicken auf das Level
-            if huntercheck_gefunden:
-                time.sleep(3)
-                klicke_bild("menu.png", status_callback=status_callback)
-                time.sleep(3)
-                klicke_bild("chapter.png", status_callback=status_callback)
-                status_callback("Hunter-Daily abgeschlossen (huntercheck gefunden)")
-                return
-
             klicke_bild(level_bilder[hunter_level], status_callback=status_callback)
             time.sleep(3)
             klicke_bild("hunter8.png", status_callback=status_callback)
-            if not warte_auf_bild("hunter9.png", status_callback):
-                status_callback("hunter9.png nicht gefunden. Hunter-Daily abgebrochen.")
-                return
+            warte_auf_bild("hunter9.png", status_callback)
             klicke_bild("hunter9.png", status_callback=status_callback)
             time.sleep(10)
         else:
