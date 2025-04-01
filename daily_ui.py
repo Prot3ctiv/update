@@ -12,7 +12,7 @@ import threading
 repo_owner = "Prot3ctiv"
 repo_name = "auto"
 file_path = "keys.json"
-github_token = "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"  # Ersetzen Sie dies durch Ihr GitHub-Token
+github_token = "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"  # Ersetzen Sie dies durch Ihr GitHub-Token
 
 def lade_keys_von_online():
     """Lädt die Aktivierungskeys von der Online-Datei."""
@@ -159,7 +159,7 @@ def starte_patch_vorgang():
                     update_progress((geladene_dateien / total_dateien) * 100)
 
             patch_fenster.destroy()
-            starte_ui()
+            starte_ui()  # Starte die UI nach erfolgreichem Patch
 
         except requests.exceptions.RequestException as e:
             print(f"Fehler beim Herunterladen der Updates: {e}")
