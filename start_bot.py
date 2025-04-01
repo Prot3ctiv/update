@@ -5,9 +5,10 @@ import requests
 import hashlib
 import os
 import daily
+import threading
 
 def starte_bot():
-    """Starts the Daily Bot with selected values."""
+    """Starts the Daily Bot with selected values in a separate thread."""
     gate_keys = gate_keys_var.get()
     replay_keys = replay_keys_var.get()
     hunter_keys = hunter_keys_var.get()
@@ -17,11 +18,20 @@ def starte_bot():
     equipment = equipment_var.get()
     hunter_level = hunter_level_var.get()
     chaos_selection = chaos_selection_var.get()
-    daily.daily_bot(gate_keys, replay_keys, hunter_keys, chaos_keys, gate_auswahl, category, equipment, hunter_level, chaos_selection, aktualisiere_status)
+
+    def bot_thread():
+        daily.daily_bot(gate_keys, replay_keys, hunter_keys, chaos_keys, gate_auswahl, category, equipment, hunter_level, chaos_selection, aktualisiere_status)
+
+    threading.Thread(target=bot_thread).start()
 
 def aktualisiere_status(status):
     """Updates the status display in the UI."""
-    status_label.config(text=status)
+    root.after(0, lambda: status_label.config(text=status))
+
+def stoppe_bot():
+    """Sets the stop flag in daily.py."""
+    daily.stop_bot = True
+    aktualisiere_status("Bot wurde gestoppt")
 
 # UI-Setup
 root = tk.Tk()
@@ -57,10 +67,10 @@ style.map("TCombobox",
 # Stil für Buttons
 button_style = ttk.Style()
 button_style.configure("TButton",
-                     padding=10,
-                     font=("Helvetica", 12, "bold"),
-                     background="#4CAF50",
-                     foreground="white")
+                            padding=10,
+                            font=("Helvetica", 12, "bold"),
+                            background="#4CAF50",
+                            foreground="white")
 
 # Frame für die Hauptinhalte
 main_frame = tk.Frame(root, padx=20, pady=20)
@@ -184,6 +194,9 @@ ttk.Combobox(chaos_frame, textvariable=chaos_selection_var, values=["Yes", "No"]
 
 start_button = ttk.Button(main_frame, text="Start", command=starte_bot, style="TButton")
 start_button.grid(row=5, column=2, columnspan=2, pady=10)
+
+stop_button = ttk.Button(main_frame, text="Stop", command=stoppe_bot, style="TButton")
+stop_button.grid(row=5, column=0, columnspan=2, pady=10)
 
 # Statusanzeige
 status_frame = tk.Frame(main_frame, bg="black")
