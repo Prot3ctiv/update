@@ -268,7 +268,9 @@ def hunter_daily(hunter_level, status_callback):
     huntercheck_thread.start()
 
     time.sleep(3)
-    warte_auf_bild("hunter.png", status_callback)
+    if not warte_auf_bild("hunter.png", status_callback):
+        status_callback("hunter.png nicht gefunden. Hunter-Daily abgebrochen.")
+        return
     klicke_bild("hunter.png", status_callback=status_callback)
     time.sleep(5)
 
@@ -291,10 +293,21 @@ def hunter_daily(hunter_level, status_callback):
     }
 
     if hunter_level in level_bilder:
+        # Zusätzlicher Huntercheck vor dem Klicken auf das Level
+        if huntercheck_gefunden:
+            time.sleep(3)
+            klicke_bild("menu.png", status_callback=status_callback)
+            time.sleep(3)
+            klicke_bild("chapter.png", status_callback=status_callback)
+            status_callback("Hunter-Daily abgeschlossen (huntercheck gefunden)")
+            return
+
         klicke_bild(level_bilder[hunter_level], status_callback=status_callback)
         time.sleep(3)
         klicke_bild("hunter8.png", status_callback=status_callback)
-        warte_auf_bild("hunter9.png", status_callback)
+        if not warte_auf_bild("hunter9.png", status_callback):
+            status_callback("hunter9.png nicht gefunden. Hunter-Daily abgebrochen.")
+            return
         klicke_bild("hunter9.png", status_callback=status_callback)
         time.sleep(10)
     else:
@@ -311,10 +324,21 @@ def hunter_daily(hunter_level, status_callback):
             return
 
         if hunter_level in level_bilder:
+            # Zusätzlicher Huntercheck vor dem Klicken auf das Level
+            if huntercheck_gefunden:
+                time.sleep(3)
+                klicke_bild("menu.png", status_callback=status_callback)
+                time.sleep(3)
+                klicke_bild("chapter.png", status_callback=status_callback)
+                status_callback("Hunter-Daily abgeschlossen (huntercheck gefunden)")
+                return
+
             klicke_bild(level_bilder[hunter_level], status_callback=status_callback)
             time.sleep(3)
             klicke_bild("hunter8.png", status_callback=status_callback)
-            warte_auf_bild("hunter9.png", status_callback)
+            if not warte_auf_bild("hunter9.png", status_callback):
+                status_callback("hunter9.png nicht gefunden. Hunter-Daily abgebrochen.")
+                return
             klicke_bild("hunter9.png", status_callback=status_callback)
             time.sleep(10)
         else:
@@ -331,7 +355,10 @@ def chaos_daily(chaos_selection, status_callback):
     chascheck_thread.start()
 
     time.sleep(3)
-    warte_auf_bild("chas.png", status_callback)
+    if not warte_auf_bild("chas.png", status_callback):
+        status_callback("chas.png nicht gefunden. Chaos-Daily abgebrochen.")
+        return
+
     klicke_bild("chas.png", status_callback=status_callback)
     time.sleep(3)
 
@@ -353,7 +380,7 @@ def chaos_daily(chaos_selection, status_callback):
             break
 
     if not gefunden:
-        status_callback("Keines der chas1-5 Bilder gefunden")
+        status_callback("Keines der chas1-5 Bilder gefunden. Chaos-Daily abgebrochen.")
         return
 
     if chascheck_gefunden:
@@ -367,20 +394,27 @@ def chaos_daily(chaos_selection, status_callback):
     # Hier die Logik für chas6.png basierend auf der Auswahl
     positionen = pyautogui.locateAllOnScreen("chas6.png")
     if positionen:
-        if chaos_selection == "Yes":
-            rechts_position = max(positionen, key=lambda pos: pos.left)
-            pyautogui.click(rechts_position.left + rechts_position.width / 2, rechts_position.top + rechts_position.height / 2)
-        else:
-            links_position = min(positionen, key=lambda pos: pos.left)
-            pyautogui.click(links_position.left + links_position.width / 2, links_position.top + links_position.height / 2)
+        try:
+            if chaos_selection == "Yes":
+                rechts_position = max(positionen, key=lambda pos: pos.left)
+                pyautogui.click(rechts_position.left + rechts_position.width / 2, rechts_position.top + rechts_position.height / 2)
+            else:
+                links_position = min(positionen, key=lambda pos: pos.left)
+                pyautogui.click(links_position.left + links_position.width / 2, links_position.top + links_position.height / 2)
+        except ValueError:
+            status_callback("Fehler beim Auswählen von chas6.png. Chaos-Daily abgebrochen.")
+            return
     else:
-        status_callback("chas6.png nicht gefunden")
+        status_callback("chas6.png nicht gefunden. Chaos-Daily abgebrochen.")
+        return
 
     time.sleep(3)
     klicke_bild("chas7.png", status_callback=status_callback)
     time.sleep(3)
     klicke_bild("chas8.png", status_callback=status_callback)
-    warte_auf_bild("chas9.png", status_callback)
+    if not warte_auf_bild("chas9.png", status_callback):
+        status_callback("chas9.png nicht gefunden. Chaos-Daily abgebrochen.")
+        return
     klicke_bild("chas9.png", status_callback=status_callback)
     time.sleep(10)
 
@@ -395,20 +429,27 @@ def chaos_daily(chaos_selection, status_callback):
 
         positionen = pyautogui.locateAllOnScreen("chas6.png")
         if positionen:
-            if chaos_selection == "Yes":
-                rechts_position = max(positionen, key=lambda pos: pos.left)
-                pyautogui.click(rechts_position.left + rechts_position.width / 2, rechts_position.top + rechts_position.height / 2)
-            else:
-                links_position = min(positionen, key=lambda pos: pos.left)
-                pyautogui.click(links_position.left + links_position.width / 2, links_position.top + links_position.height / 2)
+            try:
+                if chaos_selection == "Yes":
+                    rechts_position = max(positionen, key=lambda pos: pos.left)
+                    pyautogui.click(rechts_position.left + rechts_position.width / 2, rechts_position.top + rechts_position.height / 2)
+                else:
+                    links_position = min(positionen, key=lambda pos: pos.left)
+                    pyautogui.click(links_position.left + links_position.width / 2, links_position.top + links_position.height / 2)
+            except ValueError:
+                status_callback("Fehler beim Auswählen von chas6.png. Chaos-Daily abgebrochen.")
+                return
         else:
-            status_callback("chas6.png nicht gefunden")
+            status_callback("chas6.png nicht gefunden. Chaos-Daily abgebrochen.")
+            return
 
         time.sleep(3)
         klicke_bild("chas7.png", status_callback=status_callback)
         time.sleep(3)
         klicke_bild("chas8.png", status_callback=status_callback)
-        warte_auf_bild("chas9.png", status_callback)
+        if not warte_auf_bild("chas9.png", status_callback):
+            status_callback("chas9.png nicht gefunden. Chaos-Daily abgebrochen.")
+            return
         klicke_bild("chas9.png", status_callback=status_callback)
         time.sleep(10)
         klicke_bild("dne.png", status_callback=status_callback)
