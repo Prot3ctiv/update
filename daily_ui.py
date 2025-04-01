@@ -107,7 +107,7 @@ def starte_patch_vorgang():
     """Erstellt ein Fenster für den Patchvorgang mit Fortschrittsbalken."""
     patch_fenster = tk.Tk()
     patch_fenster.title("Patchvorgang")
-    patch_fenster.geometry("400x200")
+    patch_fenster.geometry("400x300")
 
     try:
         head_image = Image.open(os.path.join(os.path.dirname(__file__), "head3.png"))
