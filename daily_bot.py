@@ -1,6 +1,6 @@
 import threading
 import time
-from spiel_aktionen import gate_daily, instanz_daily, hunter_daily, chaos_daily, kaufe_schluessel
+from spiel_aktionen import gate_daily, instanz_daily, hunter_daily, chaos_daily, kaufe_schluessel, gatemine_prozess  # gatemine_prozess importieren
 from bild_erkennung import klicke_bild, warte_und_klicke_bild
 from bild_suche_threads import gatecheck_suche, inscheck_suche, huntercheck_suche, chascheck_suche
 
@@ -61,5 +61,7 @@ def daily_bot(gate_keys, replay_keys, hunter_keys, chaos_keys, gate_auswahl, cat
         chaos_daily(chaos_selection, status_callback)
 
         status_callback("Tägliche Aufgaben abgeschlossen")
+
+        gatemine_prozess(status_callback)  # Starte den Gatemining-Prozess
 
     threading.Thread(target=bot_thread).start()
