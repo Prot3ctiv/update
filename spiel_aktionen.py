@@ -1,6 +1,7 @@
 import time
 from bild_erkennung import finde_bild, klicke_bild, warte_auf_bild, warte_und_klicke_bild
 import threading
+import pyautogui
 
 # Globale Variablen
 gatecheck_gefunden = False
@@ -376,9 +377,9 @@ def chaos_daily(chaos_selection, status_callback):
                     if chaos_selection == "Yes":
                         rechts_position = max(positionen, key=lambda pos: pos.left)
                         pyautogui.click(rechts_position.left + rechts_position.width / 2, rechts_position.top + rechts_position.height / 2)
-                else:
-                    links_position = min(positionen, key=lambda pos: pos.left)
-                    pyautogui.click(links_position.left + links_position.width / 2, links_position.top + links_position.height / 2)
+                    else:
+                        links_position = min(positionen, key=lambda pos: pos.left)
+                        pyautogui.click(links_position.left + links_position.width / 2, links_position.top + links_position.height / 2)
                 except ValueError:
                     status_callback("Fehler beim Auswählen von chas6.png. Chaos-Daily abgebrochen.")
                     return
@@ -411,8 +412,3 @@ def gatemine_prozess(status_callback):
         time.sleep(3)
         klicke_bild("mine3.png", status_callback=status_callback)
         time.sleep(60)  # Warte 1 Minute
-
-# Beispielaufruf am Ende der anderen Daily-Prozesse:
-# ... (Aufrufe von gate_daily, instanz_daily, hunter_daily, chaos_daily)
-
-#gatemine_prozess(status_callback)  # Starte den Gatemining-Prozess
