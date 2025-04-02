@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import os
-import daily
 import threading
+from daily_bot import daily_bot  # Importiere daily_bot aus daily_bot.py
+from spiel_aktionen import stop_bot  # Importiere stop_bot aus spiel_aktionen.py
 
 def starte_bot():
     """Starts the Daily Bot with selected values in a separate thread."""
@@ -18,7 +19,7 @@ def starte_bot():
     chaos_selection = chaos_selection_var.get()
 
     def bot_thread():
-        daily.daily_bot(gate_keys, replay_keys, hunter_keys, chaos_keys, gate_auswahl, category, equipment, hunter_level, chaos_selection, aktualisiere_status)
+        daily_bot(gate_keys, replay_keys, hunter_keys, chaos_keys, gate_auswahl, category, equipment, hunter_level, chaos_selection, aktualisiere_status)  # Verwende daily_bot aus daily_bot.py
 
     threading.Thread(target=bot_thread).start()
 
@@ -41,8 +42,9 @@ def setze_status_text(text):
         status_shadow_labels.append(shadow_label)
 
 def stoppe_bot():
-    """Sets the stop flag in daily.py."""
-    daily.stop_bot = True
+    """Sets the stop flag in spiel_aktionen.py."""
+    global stop_bot
+    stop_bot = True  # Verwende stop_bot aus spiel_aktionen.py
     aktualisiere_status("Bot wurde gestoppt")
 
 # UI-Setup
@@ -79,10 +81,10 @@ style.map("TCombobox",
 # Stil für Buttons
 button_style = ttk.Style()
 button_style.configure("TButton",
-                            padding=10,
-                            font=("Helvetica", 12, "bold"),
-                            background="#4CAF50",
-                            foreground="white")
+                                padding=10,
+                                font=("Helvetica", 12, "bold"),
+                                background="#4CAF50",
+                                foreground="white")
 
 # Frame für die Hauptinhalte
 main_frame = tk.Frame(root, padx=20, pady=20)
